@@ -33,6 +33,7 @@ if (isset($_POST["submitbutton"])) {
     $comment = htmlspecialchars(trim($_POST["comment"]));
     $price = htmlspecialchars(trim($_POST["price"]));
     $quantity = htmlspecialchars(trim($_POST["quantity"]));
+    
     if (mb_strlen($productcode) > 0) {
         if ($productcode[0] != 'p') {
             $errorOccured = "true";
@@ -126,20 +127,36 @@ if (isset($_POST["submitbutton"])) {
 
     if ($errorOccured == false) 
     {
-        $productcode = "";
-$firstname = "";
-$lastname = "";
-
-
-$city = "";
-
-$comment = "";
-
-$price = "";
-
-$quantity = "";
-
+//
+//        echo $productcode;
+//        echo $firstname;
+//        echo $lastname;
+//        echo $city;
+//        
         $confirmationmessage = "your info is correct";
+        $myArray="";
+        $Subtotal= (floatval($price)) * (floatval($quantity));
+            
+            $Taxesamount= ($Subtotal*13.45)/100;
+            $Grandtotal=$Subtotal+$Taxesamount;
+            
+            $myArray = array($productcode, $firstname, $lastname, $city,$comment, $price, $quantity,  $Subtotal,
+            $Taxesamount, $Grandtotal);
+            $JSONstring = json_encode($myArray);
+
+            $anotherArray = json_decode($JSONstring);
+            #var_dump($anotherArray);
+
+//            $anotherArray[0];
+            $fileHandle = fopen("jft.txt", "a")
+                    or die('cannot open the data file');
+            fwrite($fileHandle, $JSONstring . "\n");
+            
+            #close the file
+            fclose($fileHandle);
+
+            #open/write/close file in one step
+           // file_put_contents("jft.txt", $JSONstring,FILE_APPEND);
     }
     #this goes below in the <form>
     // <span class = "validationerror">
@@ -168,30 +185,7 @@ $quantity = "";
 
         <body>
             <?php
-            $myArray="";
-            $Subtotal= (floatval($price)) * (floatval($quantity));
             
-$Taxesamount= ($Subtotal*13.45)/100;
-$Grandtotal=$Subtotal+$Taxesamount;
-            
-            $myarray = array("$productcode", "$firstname", "$lastname", "$city","$comment", "$price", "$quantity",  "$Subtotal",
-                "$Taxesamount", "$Grandtotal");
-            $JSONstring = json_encode($myarray);
-
-            $anotherArray = json_decode($JSONstring);
-            #var_dump($anotherArray);
-
-            $anotherArray[0];
-            $fileHandle = fopen("jft.txt", "a")
-                    or die('cannot open the data file');
-            fwrite($fileHandle, "$myArray");
-            
-            #close the file
-            fclose($fileHandle);
-
-            #open/write/close file in one step
-            file_put_contents("jft.txt", $JSONstring,
-                    FILE_APPEND);
             ?> 
             <table width="100%">
                 <tr>
