@@ -1,7 +1,8 @@
 
 
 <?php
-include_once 'PHPfunctions.php'; {
+include_once 'PHPfunctions.php';
+{
     ?>
     <!DOCTYPE html>
     <html>
@@ -32,20 +33,20 @@ include_once 'PHPfunctions.php'; {
         </head>
 
         <body class="<?php
-    $backgroundcolor = "pinkbackground";
-
-    if (isset($_GET["command"])) {
-        if ($_GET["command"] == "print") {
-            $backgroundcolor = "whitebackground";
-        } else {
-            if ($_GET["command"] == "green") {
-                $backgroundcolor = "greenbackground";
+        $backgroundcolor = "pinkbackground";
+        #  a command parameter in the url.
+        if (isset($_GET["command"])) {
+            if ($_GET["command"] == "print") {
+                $backgroundcolor = "whitebackground";
+            } else {
+                if ($_GET["command"] == "green") {
+                    $backgroundcolor = "greenbackground";
+                }
             }
         }
-    }
-    echo $backgroundcolor;
-    ?>">
-              <?php
+        echo $backgroundcolor;
+        ?>">
+                  <?php
                   header("Content-type: text/html");
                   ?>
             <table width="100%">
@@ -81,12 +82,14 @@ include_once 'PHPfunctions.php'; {
 
                 <?php
                 $file = fopen("jft.txt", "r") or die("Error");
-
+                #to read the file
                 while (!feof($file)) {
                     $fileLine = fgets($file);
                     if (($fileLine) != "") {
                         $dataArray = json_decode($fileLine);
                         echo"<tr>";
+
+                        # method is used for print a particular sign on a particular position in array
                         foreach ($dataArray as $key => $value) {
                             if ($key == 5) {
                                 echo "<td>" . $value . "$</td>";
