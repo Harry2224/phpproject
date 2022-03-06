@@ -2,18 +2,27 @@
 
 <?php
 include_once 'PHPfunctions.php'; {
-    ?><html>
+    ?>
+    <!DOCTYPE html>
+    <html>
         <head><meta charset ="UTF-8">
 
             <title><?php echo $pageTitle ?></title>
+            <link rel="stylesheet" type="text/css">
             <style type="text/css">
-                body{
-                    background-color:purple;
+
+                .whitebackground {
+                    background-color: white;
                 }
+                .pinkbackground {
+                    background-color: purple;
+                }
+
                 table{
                     background-color:plum;
                 }
-                h1{
+                h1
+                {
                     color:green;
                 }
                 #buttonAlign {
@@ -22,12 +31,23 @@ include_once 'PHPfunctions.php'; {
             </style>
         </head>
 
-        <body>
-            <?php
-            header("Content-type: text/html");
+        <body class="<?php
+    $backgroundcolor = "pinkbackground";
 
-            $file = fopen("jft.txt", "r") or die("Error");
-            ?>
+    if (isset($_GET["command"])) {
+        if ($_GET["command"] == "print") {
+            $backgroundcolor = "whitebackground";
+        } else {
+            if ($_GET["command"] == "green") {
+                $backgroundcolor = "greenbackground";
+            }
+        }
+    }
+    echo $backgroundcolor;
+    ?>">
+              <?php
+                  header("Content-type: text/html");
+                  ?>
             <table width="100%">
                 <tr>
 
@@ -43,45 +63,62 @@ include_once 'PHPfunctions.php'; {
 
             </table>
             <table border="1">
-              
-                    <tr>
-                        <th>Product ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>City</th>
-                        <th>Comments</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Subtotal</th>
-                        <th>Taxes</th>
-                        <th>Grand</th>
+
+                <tr>
+                    <th>Product ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>City</th>
+                    <th>Comments</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                    <th>Taxes</th>
+                    <th>Grand</th>
 
 
-                    </tr>
-              
+                </tr>
+
                 <?php
+                $file = fopen("jft.txt", "r") or die("Error");
 
-while(($row = fgets($file)) != false) {
-
-$col = explode(',',$row);
-
-foreach($col as $data) {
-
-echo "<td>". trim($data)."</td>\n";
-
-}
-
-}
-
-?>
-
-                
-
-
+                while (!feof($file)) {
+                    $fileLine = fgets($file);
+                    if (($fileLine) != "") {
+                        $dataArray = json_decode($fileLine);
+                        echo"<tr>";
+                        foreach ($dataArray as $key => $value) {
+                            if ($key == 5) {
+                                echo "<td>" . $value . "$</td>";
+                            } else if ($key == 7) {
+                                echo "<td>" . $value . "$</td>";
+                            } else if ($key == 8) {
+                                echo "<td>" . $value . "$</td>";
+                            } else if ($key == 9) {
+                                echo "<td>" . $value . "$</td>";
+                            } else {
+                                echo "<td>" . $value . "</td>";
+                            }
+                        }
+                        echo"</tr>";
+                    }
+                }
+                ?>
 
             </table>
 
+
+
+
+
+
+            <a   href="\2111536\cheatsheet.txt" download>Download link</a>
         </body>
+        <footer class="footer">
+            <div class="footerContainer">
+                <p class="copyright">COPYRIGHT HARJINDER KAUR 2111536 (<?php echo date("Y"); ?>)</p>
+            </div>
+        </footer>
     </html>
     <?php
 }
